@@ -1102,6 +1102,10 @@ class BoundBox:
 
         if shape is not None:
             topo_shape = getattr(shape, "_wrapped", shape)
+            if topo_shape is not None and hasattr(shape, "wrapped"):
+                # the property rebuilds the compound of an assembly whose
+                # children were moved, attached or detached since it was read
+                topo_shape = shape.wrapped
             if topo_shape is not None and not isinstance(topo_shape, TopoDS_Shape):
                 raise TypeError(f"Invalid argument for shape: {topo_shape}")
 
